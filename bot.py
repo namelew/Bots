@@ -15,6 +15,14 @@ bot = commands.Bot("!")
 async def on_ready():
     print(f"{bot.user} conectado ao Discord!")
 
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    if "Oi" in message.content:
+        await message.channel.send(f"Olá, {message.author}. Bem vindo ao servidor")
+
+
 @bot.command(name="oi")
 async def oi(ctx):
     name = ctx.author.name
