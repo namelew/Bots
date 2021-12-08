@@ -54,6 +54,13 @@ async def binance(ctx, coin, base):
         await ctx.send("Ops... Ocorreu um erro")
         print(error)
 
+@bot.command("segredo")
+async def secret(ctx):
+    try:
+        await ctx.author.send("Só você receberá essa mensagem")
+    except discord.errors.Forbidden:
+        await ctx.send("Não pude te contar o segredo, habilite receber mensagem de todos do servidor")
+
 @tasks.loop(seconds=10)
 async def current_time():
     now = datetime.datetime.now()
