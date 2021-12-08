@@ -1,5 +1,7 @@
+from importlib.util import decode_source
 import os
 import datetime
+from typing import Text
 from aiohttp.http import RESPONSES
 from discord import emoji
 import requests
@@ -58,5 +60,25 @@ async def secret(ctx):
         await ctx.author.send("Só você receberá essa mensagem")
     except discord.errors.Forbidden:
         await ctx.send("Não pude te contar o segredo, habilite receber mensagem de todos do servidor")
+
+@bot.command("foto")
+async def get_random_imag(ctx):
+    url_image = "https://picsum.photos/200/300"
+
+    embed = discord.Embed(
+        title="Resultado da busca de imagem",
+        description="Essa imagem é totalmente aleatória",
+        color=0x0000FF
+    )
+
+    embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
+    embed.set_footer(text=f"Feito por {bot.user.name}", icon_url=bot.user.avatar_url)
+    embed.add_field(name="API", value="Usamos a api da " + url_image)
+    embed.add_field(name="Parâmetros", value="{largura}/{altura}")
+    embed.add_field(name="Exemplo", value=url_image, inline=False)
+    embed.set_image(url=url_image)
+
+    await ctx.send(embed=embed)
+
 
 bot.run(token)
