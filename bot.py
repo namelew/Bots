@@ -1,5 +1,6 @@
 import os
 import datetime
+import requests
 import discord
 from discord import channel
 from discord.ext import commands, tasks
@@ -15,7 +16,6 @@ bot = commands.Bot("!")
 @bot.event
 async def on_ready():
     print(f"{bot.user} conectado ao Discord!")
-    current_time.start()
 
 
 @bot.event
@@ -31,6 +31,13 @@ async def on_message(message):
 async def oi(ctx):
     name = ctx.author.name
     await ctx.send(f"Olá, {name}")
+
+@bot.command(name="calcular")
+async def calculate(ctx, *expression):
+    expression = "".join(expression)
+    response = eval(expression)
+
+    await ctx.send(f"A resposta é {response}")
 
 @tasks.loop(seconds=10)
 async def current_time():
