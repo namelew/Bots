@@ -1,5 +1,6 @@
 import os
 import datetime
+from aiohttp.http import RESPONSES
 import requests
 import discord
 from discord import channel
@@ -38,6 +39,20 @@ async def calculate(ctx, *expression):
     response = eval(expression)
 
     await ctx.send(f"A resposta é {response}")
+
+@bot.command() # default é o nome da função
+async def binance(ctx, coin, base):
+    try:
+        response = requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={coin.upper()}{base.upper()}")
+        data = response.json()
+        price = data.get("price")
+        if price:
+            await ctx.send(f"O valor do {coin}/{base} é {price}")
+        else:
+            await ctx.send(f"O par {coin}/{base} é inválido")
+    except Exception as error:
+        await ctx.send("Ops... Ocorreu um erro")
+        print(error)
 
 @tasks.loop(seconds=10)
 async def current_time():
