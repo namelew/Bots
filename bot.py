@@ -7,14 +7,13 @@ load_dotenv()
 token = os.getenv('DISCORD_TOKEN') # tolken de auth
 guild = os.getenv('DISCORD_GUILD') # nome do serve
 
-client = discord.Client()
+class CustomClient(discord.Client):
+    async def on_ready(self):
+        g = discord.utils.get(self.guilds, name=guild)
+        print(f'{self.user} has connected to the follow guild:\n{g.name}(id:{g.id})')
 
-@client.event
-async def on_ready():
-    g = discord.utils.get(client.guilds, name=guild)
-    print(f'{client.user} has connected to the follow guild:\n{g.name}(id:{g.id})')
+        members = '\n - '.join([member.name for member in g.members])
+        print(f'Guild Members:\n - {members}')
 
-    members = '\n - '.join([member.name for member in g.members])
-    print(f'Guild Members:\n - {members}')
-
+client = CustomClient()
 client.run(token)
