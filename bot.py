@@ -11,7 +11,7 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
-    g = discord.utils.find(lambda g: g.name == guild, client.guilds)
+    g = discord.utils.get(client.guilds, name=guild)
     print(f'{client.user} has connected to the follow guild:\n{g.name}(id:{g.id})')
 
     members = '\n - '.join([member.name for member in g.members])
