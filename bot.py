@@ -1,5 +1,7 @@
 import os
 import discord
+from discord import embeds
+from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -7,13 +9,14 @@ load_dotenv()
 token = os.getenv('DISCORD_TOKEN') # tolken de auth
 guild = os.getenv('DISCORD_GUILD') # nome do serve
 
-class CustomClient(discord.Client):
-    async def on_ready(self):
-        g = discord.utils.get(self.guilds, name=guild)
-        print(f'{self.user} has connected to the follow guild:\n{g.name}(id:{g.id})')
+bot = commands.Bot("!")
 
-        members = '\n - '.join([member.name for member in g.members])
-        print(f'Guild Members:\n - {members}')
+@bot.event
+async def on_ready():
+    print(f"{bot.user} conectado ao Discord!")
 
-client = CustomClient()
-client.run(token)
+@bot.command(name="oi")
+async def oi(ctx):
+    name = ctx.author.name
+    await ctx.send(f"Olá, {name}")
+bot.run(token)
